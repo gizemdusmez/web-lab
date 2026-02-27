@@ -9,9 +9,10 @@ function App() {
       <h1>Web Tasarımı ve Programlama</h1>
       <h2>LAB - 1</h2>
       <p>Ad Soyad: Gizem Düşmez</p>
-      <p>Öğrenci No: XXXXX</p>
+      <p>Öğrenci No: 230541009</p>
       <p>Bölüm: Yazılım Mühendisliği</p>
       <p>Hobilerim: Kod yazmak, spor, müzik</p>
+      <p>Hedefim: cloud engineer olmak</p>
     </div>
   )
 }
