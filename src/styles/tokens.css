@@ -3,28 +3,35 @@
    Tüm CSS değişkenleri bu dosyada tanımlanır.
    ============================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
    /* ── Renkler ─────────────────────────────── */
-   --color-primary: #2563eb;
-   /* blue-600   */
-   --color-secondary: #0ea5e9;
-   /* sky-500    */
-   --color-accent: #0891b2;
-   /* cyan-600   */
+   --color-primary: #7c3aed;
+   /* violet-600  */
+   --color-secondary: #db2777;
+   /* pink-600    */
+   --color-accent: #f59e0b;
+   /* amber-500   */
    --color-bg: #ffffff;
-   /* beyaz      */
-   --color-surface: #f8fafc;
-   /* slate-50   */
-   --color-border: #e2e8f0;
-   /* slate-200  */
-   --color-text: #1e293b;
-   /* slate-800  */
-   --color-muted: #64748b;
-   /* slate-500  */
+   /* beyaz       */
+   --color-surface: #faf5ff;
+   /* violet-50   */
+   --color-border: #ede9fe;
+   /* violet-100  */
+   --color-text: #1e1b4b;
+   /* indigo-950  */
+   --color-muted: #6b7280;
+   /* gray-500    */
    --color-error: #dc2626;
-   /* red-600    */
+   /* red-600     */
    --color-success: #16a34a;
-   /* green-600  */
+   /* green-600   */
+
+   /* ── Gradientler ─────────────────────────── */
+   --gradient-hero: linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #db2777 100%);
+   --gradient-card: linear-gradient(135deg, #7c3aed, #db2777);
+   --gradient-footer: linear-gradient(135deg, #1e1b4b 0%, #0f0a1e 100%);
 
    /* ── Spacing (rem tabanlı 8px sistemi) ───── */
    --space-xs: 0.25rem;
@@ -49,6 +56,8 @@
    /*  8px */
    --radius-lg: 1rem;
    /* 16px */
+   --radius-xl: 1.5rem;
+   /* 24px */
    --radius-full: 9999px;
 
    /* ── Font aileleri ───────────────────────── */
@@ -56,8 +65,6 @@
    --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
 
    /* ── Fluid typography (clamp) ────────────── */
-   /* clamp(MIN, PREFERRED, MAX)
-     PREFERRED: vw değeri → viewport'a göre büyür/küçülür          */
    --text-sm: clamp(0.75rem, 1.5vw, 0.875rem);
    /* 12–14px */
    --text-base: clamp(0.875rem, 2vw, 1rem);
@@ -70,13 +77,17 @@
    /* 20–28px */
    --text-3xl: clamp(1.75rem, 5vw, 2.5rem);
    /* 28–40px */
+   --text-4xl: clamp(2.25rem, 6vw, 3.5rem);
+   /* 36–56px */
 
    /* ── Gölgeler ────────────────────────────── */
-   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
-   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.16);
+   --shadow-glow: 0 0 0 4px rgba(37, 99, 235, 0.25), 0 8px 24px rgba(37, 99, 235, 0.35);
 
    /* ── Geçişler ────────────────────────────── */
    --transition-fast: 150ms ease;
    --transition-normal: 300ms ease;
+   --transition-slow: 500ms ease;
 }
