@@ -1,18 +1,40 @@
-/* =============================================
-   index.css — LAB-3
-   Global base stiller (tokens App.css üzerinden geliyor)
-   ============================================= */
+@import "tailwindcss";
 
-/* Google Fonts — Inter */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@theme {
+   --color-primary: #7c3aed;
+   --color-secondary: #db2777;
+   --color-accent: #f59e0b;
+   --font-sans: "Inter", system-ui, sans-serif;
 
-/* Tokens App.css → layout.css → tokens.css üzerinden
-   geliyor; burada ayrıca import gerekmez.
-   Ekstra global overrides için bu dosyayı kullan.   */
+   @keyframes fadeInUp {
+      from {
+         opacity: 0;
+         transform: translateY(10px);
+      }
+
+      to {
+         opacity: 1;
+         transform: translateY(0);
+      }
+   }
+}
+
+.animate-fadeInUp {
+   animation: fadeInUp 0.4s ease-out both;
+}
 
 :root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+   font-family: var(--font-sans);
+   font-synthesis: none;
+   text-rendering: optimizeLegibility;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+   @apply bg-white text-slate-900;
+}
+
+.dark body {
+   @apply bg-slate-950 text-slate-50;
 }
