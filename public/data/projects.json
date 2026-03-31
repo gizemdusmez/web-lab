@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "title": "Portföy Sitesi",
+        "description": "LAB-2 ve LAB-3 kapsamında geliştirilen, semantic HTML ve modern CSS design-token sistemi kullanan kişisel portföy sayfası.",
+        "tech": [
+            "React",
+            "TypeScript",
+            "Tailwind CSS"
+        ],
+        "year": 2026,
+        "category": "frontend",
+        "featured": true,
+        "image": "/proje-1.png"
+    },
+    {
+        "id": 2,
+        "title": "Süperkapasitör Araştırma API",
+        "description": "Elsevier ve Scopus API'larından veri çeken, MongoDB'de saklayan ve analiz raporları sunan Python tabanlı araştırma pipeline'ı.",
+        "tech": [
+            "Python",
+            "MongoDB",
+            "FastAPI"
+        ],
+        "year": 2025,
+        "category": "backend",
+        "featured": true,
+        "image": "/proje-2.png"
+    },
+    {
+        "id": 3,
+        "title": "AWS CI/CD Pipeline",
+        "description": "CodePipeline, CodeBuild ve CodeDeploy ile kurulmuş otomatik test ve dağıtım sistemi. Blue/Green ve Canary dağıtım stratejilerini destekler.",
+        "tech": [
+            "AWS",
+            "Docker",
+            "DevOps"
+        ],
+        "year": 2024,
+        "category": "backend",
+        "featured": false,
+        "image": "/proje-3.png"
+    },
+    {
+        "id": 4,
+        "title": "E-Ticaret Platformu Dashboard",
+        "description": "Satıcıların satış verilerini grafiklerle takip edebileceği, sipariş durumlarını güncelleyebileceği interaktif yönetici paneli.",
+        "tech": [
+            "React",
+            "Redux",
+            "Recharts"
+        ],
+        "year": 2024,
+        "category": "frontend",
+        "featured": false,
+        "image": "/proje-1.png"
+    },
+    {
+        "id": 5,
+        "title": "Emotion Analysis Journal (UMAY)",
+        "description": "Kullanıcı günlüklerini analiz ederek duygu durum haritası çıkaran ve AI destekli öneriler sunan tam kapsamlı web uygulaması.",
+        "tech": [
+            "React",
+            "Node.js",
+            "PostgreSQL"
+        ],
+        "year": 2025,
+        "category": "fullstack",
+        "featured": true,
+        "image": "/proje-2.png"
+    }
+]
