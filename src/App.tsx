@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
+import type { Project, Category, SortField, SortOrder } from "./types/project"
+import { fetchProjects } from "./services/projectService"
+import { applyFilters } from "./utils/projectHelpers"
 import Button from './components/Button'
 import Input from './components/Input'
+import Alert from './components/Alert'
 import UIKit from './pages/UIKit'
 
 export default function App() {
@@ -8,6 +12,30 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark'
   })
+
+  const [projects, setProjects] = useState<Project[]>([])
+  const [search, setSearch] = useState("")
+  const [category, setCategory] = useState<Category | "all">("all")
+  const [sortField, setSortField] = useState<SortField>("year")
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true)
+        setError(null)
+        const data = await fetchProjects()
+        setProjects(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Bilinmeyen bir hata oluştu")
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
 
   useEffect(() => {
     if (darkMode) {
@@ -18,6 +46,8 @@ export default function App() {
       localStorage.setItem('theme', 'light')
     }
   }, [darkMode])
+
+  const filteredProjects = applyFilters(projects, search, category, sortField, sortOrder)
 
   if (showUIKit) {
     return (
@@ -118,27 +148,81 @@ export default function App() {
 
           {/* ── PROJELER ──────────────────────── */}
           <section id="projeler" className="scroll-mt-32">
-            <h2 className="text-3xl font-extrabold text-primary dark:text-purple-400 mb-12 text-center sm:text-left">Projelerim</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <ProjectCard
-                title="Portföy Sitesi"
-                description="LAB-2 ve LAB-3 kapsamında geliştirilen, semantic HTML ve modern CSS design-token sistemi kullanan kişisel portföy sayfası."
-                tags={['React', 'TypeScript', 'CSS']}
-                img="/proje-1.png"
+            <h2 className="text-3xl font-extrabold text-primary dark:text-purple-400 mb-8 text-center sm:text-left">Projelerim</h2>
+
+            {error && (
+              <Alert variant="error" title="Hata" className="mb-8">
+                {error}
+              </Alert>
+            )}
+
+            <div className="flex flex-col md:flex-row gap-4 mb-8">
+              <Input
+                id="search"
+                label="Proje Ara"
+                placeholder="Proje ara..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <ProjectCard
-                title="Süperkapasitör Araştırma"
-                description="Elsevier ve Scopus API'larından veri çeken, MongoDB'de saklayan ve analiz raporları sunan Python tabanlı araştırma pipeline'ı."
-                tags={['Python', 'MongoDB', 'API']}
-                img="/proje-2.png"
-              />
-              <ProjectCard
-                title="AWS CI/CD Pipeline"
-                description="CodePipeline, CodeBuild ve CodeDeploy ile kurulmuş otomatik test ve dağıtım sistemi. Blue/Green ve Canary dağıtım stratejilerini destekler."
-                tags={['AWS', 'CI/CD', 'DevOps']}
-                img="/proje-3.png"
-              />
+              <div className="flex gap-2 items-end">
+                <select
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value as SortField)}
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-primary focus:ring-4 focus:ring-purple-100 dark:focus:ring-purple-900/30 rounded-xl text-sm transition-all outline-none text-slate-900 dark:text-slate-100 h-[48px]"
+                >
+                  <option value="year">Yıla Göre</option>
+                  <option value="title">Başlığa Göre</option>
+                </select>
+                <Button
+                  variant="secondary"
+                  className="h-[48px] whitespace-nowrap"
+                  onClick={() => setSortOrder(o => o === "asc" ? "desc" : "asc")}
+                >
+                  {sortOrder === "asc" ? "A-Z / Eski" : "Z-A / Yeni"}
+                </Button>
+              </div>
             </div>
+
+            <div className="flex flex-wrap gap-2 mb-8 justify-center sm:justify-start">
+              {(["all", "frontend", "fullstack", "backend"] as const).map(cat => (
+                <Button
+                  key={cat}
+                  variant={category === cat ? "primary" : "ghost"}
+                  size="sm"
+                  onClick={() => setCategory(cat as Category | "all")}
+                >
+                  {cat === "all" ? "Tümü" : cat}
+                </Button>
+              ))}
+            </div>
+
+            {loading && (
+              <p className="text-center text-slate-500 animate-pulse my-16 text-lg tracking-wide">Projeler Yükleniyor...</p>
+            )}
+
+            {!loading && filteredProjects.length === 0 && (
+              <p className="text-center text-slate-500 my-16 text-lg">Eşleşen proje bulunamadı.</p>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map(project => (
+                <ProjectCard
+                  key={project.id}
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tech}
+                  img={project.image}
+                  year={project.year}
+                  category={project.category}
+                />
+              ))}
+            </div>
+
+            {!loading && projects.length > 0 && (
+              <p className="text-sm text-slate-500 mt-8 text-center font-medium">
+                {filteredProjects.length} / {projects.length} proje gösteriliyor
+              </p>
+            )}
           </section>
 
           {/* ── İLETİŞİM ──────────────────────── */}
@@ -171,9 +255,11 @@ interface ProjectCardProps {
   description: string;
   tags: string[];
   img: string;
+  year?: number;
+  category?: string;
 }
 
-function ProjectCard({ title, description, tags, img }: ProjectCardProps) {
+function ProjectCard({ title, description, tags, img, year, category }: ProjectCardProps) {
   return (
     <article className="group bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden flex flex-col">
       <div className="h-48 overflow-hidden relative">
@@ -184,16 +270,21 @@ function ProjectCard({ title, description, tags, img }: ProjectCardProps) {
       </div>
       <div className="p-6 flex flex-col flex-1">
         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-primary transition-colors">{title}</h3>
-        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">
+        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4 flex-1">
           {description}
         </p>
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag: string) => (
             <span key={tag} className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold text-slate-500 tracking-tight uppercase">
               {tag}
             </span>
           ))}
         </div>
+        {(year || category) && (
+          <p className="text-xs text-slate-400 dark:text-slate-500 mb-6 font-mono font-semibold">
+            {year} &middot; <span className="uppercase">{category}</span>
+          </p>
+        )}
         <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-primary dark:text-purple-400 group-hover:gap-3 transition-all">
           GitHub <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
         </a>

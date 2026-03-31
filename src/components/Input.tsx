@@ -5,6 +5,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
     error?: string;
     helpText?: string;
     as?: 'input' | 'textarea';
+    rows?: number;
 }
 
 const Input: React.FC<InputProps> = ({
